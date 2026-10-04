@@ -1,0 +1,66 @@
+name: MyLedger Android Build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build MyLedger APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Get the project from GitHub
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # 2. Install Java
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # 3. Install Android SDK
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      # 4. Install required Android SDK packages
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "platform-tools"
+          sdkmanager "platforms;android-35"
+          sdkmanager "build-tools;35.0.0"
+
+      # 5. Make Gradle executable
+      - name: Make Gradle executable
+        run: chmod +x gradlew
+
+      # 6. Clean previous builds
+      - name: Clean project
+        run: ./gradlew clean
+
+      # 7. Build debug APK
+      - name: Build APK
+        run: ./gradlew :app:assembleDebug
+
+      # 8. Upload APK to GitHub Actions
+      - name: Upload MyLedger APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyLedger-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      # 9. Display build information
+      - name: Build summary
+        run: |
+          echo "======================================"
+          echo "       MyLedger APK BUILD COMPLETE"
+          echo "======================================"
+          echo "APK: app/build/outputs/apk/debug/app-debug.apk"
+          ls -lh app/build/outputs/apk/debug/app-debug.apk
