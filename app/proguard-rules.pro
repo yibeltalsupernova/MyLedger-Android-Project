@@ -1,1 +1,1 @@
-# MyLedger currently uses no custom ProGuard rules.
+# MyLedger production rules can be added when release minification is enabled.

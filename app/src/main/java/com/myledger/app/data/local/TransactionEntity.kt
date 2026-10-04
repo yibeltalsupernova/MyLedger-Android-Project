@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "transactions",
     indices = [
-        Index(value = ["timestamp"]),
-        Index(value = ["vendor"]),
-        Index(value = ["category"]),
-        Index(value = ["source"]),
+        Index("timestamp"),
+        Index("vendor"),
+        Index("category"),
+        Index("source"),
         Index(value = ["smsHash"], unique = true)
     ]
 )
@@ -27,14 +27,8 @@ data class TransactionEntity(
     val originalSms: String? = null,
     val timestamp: Long = System.currentTimeMillis(),
     val smsHash: String? = null,
-    val isAutoParsed: Boolean = false
+    val isAutoParsed: Boolean = false,
+    val isRecurring: Boolean = false,
+    val recurrence: Recurrence = Recurrence.NONE,
+    val budgetId: Long? = null
 )
-
-enum class TransactionType { INCOME, EXPENSE, TRANSFER }
-
-enum class ExpenseCategory {
-    FOOD, TRANSPORT, SHOPPING, UTILITIES, RENT, AIRTIME,
-    ENTERTAINMENT, HEALTH, EDUCATION, TRANSFER, SALARY, OTHER
-}
-
-enum class PaymentSource { CBE, TELEBIRR, MPESA, OTHER, MANUAL }

@@ -1,55 +1,37 @@
 # MyLedger — ማህረቤ
 
-A local-first Android expense tracker built with Kotlin, Jetpack Compose and Room.
+## Version 1.2.0
 
-## Features
+A local-first Android personal finance manager built with Kotlin, Jetpack Compose and Room.
 
-- Offline/local Room database
-- CBE, Telebirr and M-Pesa SMS parser framework
-- Automatic expense categorization
-- Duplicate SMS protection
+### Included
+- Dashboard
+- Income / expense / transfer tracking
 - Manual transaction entry
-- Dashboard with income, expense and balance
+- Automatic vendor categorization
+- CBE / Telebirr / M-Pesa SMS parsing framework
+- Duplicate SMS protection
+- Search
+- Category spending insights
+- Monthly budgets
+- CSV export/share
+- Local Room database
+- Dark-mode setting foundation
 - GitHub Actions APK build
-- Amharic-ready UI foundation
+- Unit tests
+- Amharic-ready UI
 
-## Open in Android Studio
+### Build
+Open the root folder in Android Studio using JDK 17.
 
-1. Download/extract this repository.
-2. Open the `MyLedger` folder in Android Studio.
-3. Allow Gradle to sync.
-4. Connect an Android device or start an emulator.
-5. Run the `app` configuration.
-
-## Build APK locally
-
-From the project root:
-
-```bash
-gradle :app:assembleDebug
-```
+Command line:
+`gradle :app:assembleDebug`
 
 APK:
+`app/build/outputs/apk/debug/app-debug.apk`
 
-```text
-app/build/outputs/apk/debug/app-debug.apk
-```
+### GitHub
+Push to GitHub. The workflow in `.github/workflows/build-apk.yml` builds the debug APK and uploads it as an artifact.
 
-## Build APK on GitHub
-
-Create a GitHub repository, upload these files, and push to `main`.
-GitHub Actions will build the debug APK automatically.
-
-Go to:
-
-Actions → Build MyLedger APK → Artifacts → MyLedger-debug-apk
-
-## SMS permissions
-
-Android requires runtime SMS permissions. The application asks for RECEIVE_SMS and READ_SMS.
-
-SMS formats vary by provider and can change. The parser is intentionally modular so additional provider-specific regular expressions can be added without changing the Room database.
-
-## Architecture
-
-SMS Receiver → Parser Manager → Provider Parser → Category Engine → Room → Repository → ViewModel → Compose UI
+### Important
+Provider SMS formats vary. The included parsers are a framework and examples; production deployment should be tested against current, anonymized SMS samples from each supported provider. SMS access is subject to Android permissions and platform/policy requirements.
